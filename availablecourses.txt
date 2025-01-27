@@ -1,0 +1,42 @@
+1)Python programming
+2)data scientist
+3)machine learning engineer
+4) flutter developer
+5)java developer
+6)data analyst
+7)data engineer
+8)civil engineering
+9) mechanical engineering
+10) aeronautical engineering
+11)C developer
+12)ethical hacking
+13)Cpp developer
+14)Dot net developer
+15)Php developer
+16) Ruby developer
+17) Go developer
+18)Mern stack developer
+19) Block chain developer
+20)Game developer
+21)Ui and Ux designer
+22)Full stack developer
+23)Bio technology
+24)Bio medical
+25) Robotics
+26) Chemical engineering
+27)Iot developer
+28) Business analyst
+29) Financial analyst
+30)Web programming developer
+31) digital marketing
+32) Artificial intelligence
+33)Big Data developer
+34) Agricultural engineering
+35) Electrical and electronics engineering
+36) Electronics and Communication engineering
+37) Software developer
+38) Natural language process developer
+39)Marine engineering
+40)Cloud Computing
+41)Cyber security
+42) Computer network
