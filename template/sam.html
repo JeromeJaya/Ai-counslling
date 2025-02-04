@@ -1,1 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Dashboard</title>
+    <style>
+         body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100%;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;            
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: auto;
+            gap: 30px;
+            padding: 20px;
+            height: 100%;
+        }
+        .section {
+            padding: 15px;
+            background-color: #f4f4f4;
+            border-radius: 50px;
+            border-color:#45a049;
+            box-shadow: 0px 0px 20px rgb(99, 189, 234);
+        }
+        .section:hover {
+            padding: 20px;
+            box-shadow: 0px 0px -20px rgb(34, 222, 150);
+        }
+        .sectionSUB {
+            padding: 5px;
+            background-color: #f4f4f4;
+            border-radius: 50px;
+            border-color:#45a049;
+            box-shadow: 0px 0px 20px rgb(99, 189, 234);
+        }
+        .sectionSUB:hover {
+            background-color: #a50d0d;
+            padding: 10px;
+            box-shadow: 0px 0px -20px rgb(34, 222, 150);
+        }
+        .section h2 {
+            text-align: center;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        .section p {
+            font-size: 1em;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .sectionSUB h2 {
+            text-align: center;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            cursor :pointer;
+        }
+        .sectionSUB p {
+            font-size: 1em;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .header {
+            text-align: center;
+            padding: 20px;
+            background-color: #008cba;
+            color: white;
+            font-size: 2em;
+        }
+        .section-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .section-content button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+        }
+        .section-content button:hover {
+            background-color: #45a049;
+            box-shadow: 0px 0px 20px red;
+            margin-top: 20px;
+            padding: 15px 25px;
+        }
+        .sectionSUB button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+        }
+        .sectionSUB button:hover {
+            background-color: #45a049;
+            box-shadow: 0px 0px 20px red;
+            margin-top: 20px;
+            padding: 15px 25px;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+        .popup-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 5px;
+            width: 60%;
+            max-width: 500px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover {
+            color: #000;
+        }
+        #logoutBtn {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 10px 20px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #logoutBtn:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body background="https://i.pinimg.com/originals/f5/a8/e9/f5a8e912d16544ea9137ab8b4cf6d771.gif">
 
+    <div class="header">
+        FEED YOUR DATAS TO DISPLAY THE DASHBOARD
+    </div>
+
+    <button id="logoutBtn">Logout</button>
+
+    
+    <div class="container">
+        <div class="section">
+            <h2>Personal Profile</h2>
+            <div class="section-content">
+                <p>Update your personal details</p>
+                <button onclick="showPopup('personal')">Update Profile</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Career Planner</h2>
+            <div class="section-content">
+                <p>Plan your career path and goals</p>
+                <button onclick="showPopup('career')">Start Planning</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Short-term Goals</h2>
+            <div class="section-content">
+                <p>Feed details about your short term goals</p>
+                <button onclick="showPopup('shortTermGoals')">FEED ABOUT SHORT TERM Goals</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Skills</h2>
+            <div class="section-content">
+                <p>Enter your tech and NO Tech skills and provide your rating</p>
+                <button onclick="showPopup('techSkills')">Update Tech skills</button>
+                <button onclick="showPopup('nonTechSkills')">Update NON-Tech skills</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Your interests</h2>
+            <div class="section-content">
+                <p>Enter what you are Interest about?</p>
+                <button onclick="showPopup('interests')">Update your interests</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Your Educational background</h2>
+            <div class="section-content">
+                <p>Enter your all detail about education</p>
+                <button onclick="showPopup('education')">Update education</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>RESUME</h2>
+            <div class="section-content">
+                <p>upload your resume here if you have</p>
+                <button onclick="showPopup('resume')">UPLOAD</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Milestones and Achievements</h2>
+            <div class="section-content">
+                <p>Trackable Milestones like Courses completion and awards</p>
+                <button onclick="showPopup('milestones')">update</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Skill Gap Analysis</h2>
+            <div class="section-content">
+                <p>Identify the skill gaps in your career</p>
+                <button onclick="showPopup('skillGap')">Analyze Skills</button>
+            </div>
+        </div>
+        <div class="section">
+            <h2>Project Portfolio</h2>
+            <div class="section-content">
+                <p>Showcase your completed projects</p>
+                <button onclick="showPopup('portfolio')">View Portfolio</button>
+            </div>
+        </div>
+    </div></BR></BR><BR></BR></BR><BR>
+    <div class="sectionSUB">
+        <h2 onclick="opendash()">NOW SUBMIT TO VIEW THE DASHBOARD</h2>
+        </div>
+    <!-- Popup container -->
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup()">&times;</span>
+            <h2 id="popupTitle"></h2>
+            <div id="popupContent"></div>
+        </div>
+    </div>
+
+    <!-- Popup container -->
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup()">&times;</span>
+            <h2 id="popupTitle"></h2>
+            <div id="popupContent"></div>
+        </div>
+    </div>
+
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCj70N8dpWeXJTn-xeMG7LeRWbPMH_euvQ",
+            authDomain: "career-nav-with-ai.firebaseapp.com",
+            projectId: "career-nav-with-ai",
+            storageBucket: "career-nav-with-ai.firebasestorage.app",
+            messagingSenderId: "484031454829",
+            appId: "1:484031454829:web:b6665c361ed853d086e964",
+            measurementId: "G-WG5R1D1R5T"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Get references to auth and firestore
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Check if user is logged in
+        auth.onAuthStateChanged(function(user) {
+            if (!user) {
+                // If not logged in, redirect to login page
+                window.location.href = 'login.html';
+            }
+        });
+
+        function showPopup(section) {
+            const popup = document.getElementById('popup');
+            const popupTitle = document.getElementById('popupTitle');
+            const popupContent = document.getElementById('popupContent');
+            
+            popup.style.display = 'block';
+            switch(section) {
+                case 'personal':
+                    popupTitle.textContent = 'Personal Profile';
+                    popupContent.innerHTML = `
+                        <form>
+                            <label for="name">Full Name:</label><br>
+                            <input type="text" id="name" name="name"><br>
+                            <label for="email">Email:</label><br>
+                            <input type="email" id="email" name="email"><br>
+                            <label for="phone">Phone:</label><br>
+                            <input type="tel" id="phone" name="phone"><br>
+                            <label for="location">Location:</label><br>
+                            <input type="text" id="location" name="location"><br>
+                            <button type="submit">Save</button>
+                        </form>
+                    `;
+                    break;
+                case 'career':
+                    popupTitle.textContent = 'Career Planner';
+                    popupContent.innerHTML = `
+                        <form>
+                            <label for="currentRole">Current Role:</label><br>
+                            <input type="text" id="currentRole" name="currentRole"><br>
+                            <label for="desiredRole">Desired Role:</label><br>
+                            <input type="text" id="desiredRole" name="desiredRole"><br>
+                            <label for="timeline">Timeline to Achieve:</label><br>
+                            <input type="text" id="timeline" name="timeline"><br>
+                            <label for="steps">Action Steps:</label><br>
+                            <textarea id="steps" name="steps"></textarea><br>
+                            <button type="submit">Save Plan</button>
+                        </form>
+                    `;
+                    break;
+                case 'shortTermGoals':
+                    popupTitle.textContent = 'Short-term Goals';
+                    popupContent.innerHTML = `
+                        <form>
+                            <label for="goal1">Goal 1:</label><br>
+                            <input type="text" id="goal1" name="goal1"><br>
+                            <label for="deadline1">Deadline:</label><br>
+                            <input type="date" id="deadline1" name="deadline1"><br>
+                            <label for="goal2">Goal 2:</label><br>
+                            <input type="text" id="goal2" name="goal2"><br>
+                            <label for="deadline2">Deadline:</label><br>
+                            <input type="date" id="deadline2" name="deadline2"><br>
+                            <button type="submit">Save Goals</button>
+                        </form>
+                    `;
+                    break;
+                case 'techSkills':
+                    popupTitle.textContent = 'Tech Skills';
+                    popupContent.innerHTML = `
+                        <form>
+                            <label for="skill1">Skill 1:</label>
+                            <input type="text" id="skill1" name="skill1">
+                            <input type="range" min="1" max="5" value="3"><br>
+                            <label for="skill2">Skill 2:</label>
+                            <input type="text" id="skill2" name="skill2">
+                            <input type="range" min="1" max="5" value="3"><br>
+                            <label for="skill3">Skill 3:</label>
+                            <input type="text" id="skill3" name="skill3">
+                            <input type="range" min="1" max="5" value="3"><br>
+                            <button type="submit">Save Skills</button>
+                        </form>
+                    `;
+                    break;
+                case 'nonTechSkills':
+                    popupTitle.textContent = 'Non-Tech Skills';
+                    popupContent.innerHTML = `
+                        <form>
+                            <label for="skill1">Skill 1:</label>
+                            <input type="text" id="skill1" name="skill1">
+                            <input type="range" min="1" max="5" value="3"><br>
+                            <label for="skill2">Skill 2:</label>
+                            <input type="text" id="skill2" name="skill2">
+                            <input type="range" min="1" max="5" value="3"><br>
+                            <label for="skill3">Skill 3:</label>
+                            <input type="text" id="skill3" name="skill3">
+                            <input type="range" min="1" max="5" value="3"><br>
+                            <button type="submit">Save Skills</button>
+                        </form>
+                    `;
+                    break;
+                case 'interests':
+                    popupTitle.textContent = 'Your Interests';
+                    popupContent.innerHTML = `
+                        <form>
+                            <label for="interest1">Interest 1:</label><br>
+                            <input type="text" id="interest1" name="interest1"><br>
+                            <label for="interest2">Interest 2:</label><br>
+                            <input type="text" id="interest2" name="interest2"><br>
+                            <label for="interest3">Interest 3:</label><br>
+                            <input type="text" id="interest3" name="interest3"><br>
+                            <button type="submit">Save Interests</button>
+                        </form>
+                    `;
+                    break;
+                case 'education':
+                    popupTitle.textContent = 'Educational Background';
+                    popupContent.innerHTML = `
+                        <form>
+                            <label for="degree">Highest Degree:</label><br>
+                            <input type="text" id="degree" name="degree"><br>
+                            <label for="institution">Institution:</label><br>
+                            <input type="text" id="institution" name="institution"><br>
+                            <label for="graduationYear">Graduation Year:</label><br>
+                            <input type="number" id="graduationYear" name="graduationYear"><br>
+                            <label for="major">Major:</label><br>
+                            <input type="text" id="major" name="major"><br>
+                            <button type="submit">Save Education</button>
+                        </form>
+                    `;
+                    break;
+                case 'resume':
+                    popupTitle.textContent = 'Upload Resume';
+                    popupContent.innerHTML = `
+                        <form>
+                            <label for="resumeFile">Select your resume file:</label><br>
+                            <input type="file" id="resumeFile" name="resumeFile" accept=".pdf,.doc,.docx"><br>
+                            <button type="submit">Upload Resume</button>
+                        </form>
+                    `;
+                    break;
+                case 'milestones':
+                    popupTitle.textContent = 'Milestones and Achievements';
+                    popupContent.innerHTML = `
+                        <form>
+                            <label for="milestone1">Milestone/Achievement 1:</label><br>
+                            <input type="text" id="milestone1" name="milestone1"><br>
+                            <label for="date1">Date Achieved:</label><br>
+                            <input type="date" id="date1" name="date1"><br>
+                            <label for="milestone2">Milestone/Achievement 2:</label><br>
+                            <input type="text" id="milestone2" name="milestone2"><br>
+                            <label for="date2">Date Achieved:</label><br>
+                            <input type="date" id="date2" name="date2"><br>
+                            <button type="submit">Save Milestones</button>
+                        </form>
+                    `;
+                    break;
+                case 'skillGap':
+                    popupTitle.textContent = 'Skill Gap Analysis';
+                    popupContent.innerHTML = `
+                        <form>
+                            <label for="currentSkills">Current Skills:</label><br>
+                            <textarea id="currentSkills" name="currentSkills"></textarea><br>
+                            <label for="desiredSkills">Desired Skills:</label><br>
+                            <textarea id="desiredSkills" name="desiredSkills"></textarea><br>
+                            <label for="gapAnalysis">Gap Analysis:</label><br>
+                            <textarea id="gapAnalysis" name="gapAnalysis" readonly></textarea><br>
+                            <button type="submit">Analyze Gap</button>
+                        </form>
+                    `;
+                    break;
+                case 'portfolio':
+                    popupTitle.textContent = 'Project Portfolio';
+                    popupContent.innerHTML = `
+                        <form>
+                            <label for="projectName">Project Name:</label><br>
+                            <input type="text" id="projectName" name="projectName"><br>
+                            <label for="projectDesc">Project Description:</label><br>
+                            <textarea id="projectDesc" name="projectDesc"></textarea><br>
+                            <label for="projectLink">Project Link:</label><br>
+                            <input type="url" id="projectLink" name="projectLink"><br>
+                            <label for="technologies">Technologies Used:</label><br>
+                            <input type="text" id="technologies" name="technologies"><br>
+                            <button type="submit">Add Project</button>
+                        </form>
+                    `;
+                    break;
+            }
+            // Add event listener to the form
+            const form = popupContent.querySelector("form");
+            form.addEventListener("submit", (e) => handleFormSubmit(e, section));
+        }
+            
+        
+
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+//open dashboard
+function opendash(section) {
+    window.location.href="http://127.0.0.1:5500/template/interviewer.html";
+}
+        // Function to handle form submission
+        async function handleFormSubmit(event, section) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            const data = {};
+
+            for (const [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+
+            try {
+                const user = auth.currentUser;
+                if (user) {
+                    await storeDataInFirestore(user.uid, section, data);
+                    alert("Data saved successfully!");
+                    closePopup();
+                } else {
+                    alert("You must be logged in to save data.");
+                }
+            } catch (error) {
+                console.error("Error saving data:", error);
+                alert("Error saving data. Please try again.");
+            }
+        }
+
+        // Function to store data in Firestore
+        async function storeDataInFirestore(userId, section, data) {
+            const userDoc = db.collection("users").doc(userId);
+            const sectionDoc = userDoc.collection("user detail").doc(section);
+
+            await sectionDoc.set(data, { merge: true });
+        }
+
+        // Logout functionality
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+            auth.signOut().then(() => {
+                console.log("User signed out");
+                window.location.href = "login.html"; // Redirect to login page
+            }).catch((error) => {
+                console.error("Sign out error:", error);
+            });
+        });
+
+        // Add click event listeners to all buttons that open popups
+        document.querySelectorAll(".section-content button").forEach((button) => {
+            button.addEventListener("click", () => {
+                const section = button.textContent.toLowerCase().replace(/\s+/g, '');
+                showPopup(section);
+            });
+        });
+    </script>
+</body>
+</html>
