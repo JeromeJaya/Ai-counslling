@@ -24,7 +24,7 @@ templates = Jinja2Templates(directory="template")
 
 client = OpenAI(
     base_url="https://integrate.api.nvidia.com/v1",
-    api_key="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"
+    api_key="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"
 )
 
 class ChatMessage(BaseModel):
@@ -64,7 +64,7 @@ async def chat(chat_message: ChatMessage):
     append_to_aboutme(f"User: {chat_message.message}")
 
     completion = client.chat.completions.create(
-        model="nvidia/llama-3.1-nemotron-70b-instruct",
+        model="deepseek-ai/deepseek-r1",
         messages=app.conversation.messages,
         temperature=1,
         top_p=1,
@@ -98,7 +98,7 @@ async def chat(chat_message: ChatMessage):
     app.conversation.messages.append({"role": "user", "content":careerresult})
 
     completion = client.chat.completions.create(
-        model="nvidia/llama-3.1-nemotron-70b-instruct",
+        model="deepseek-ai/deepseek-r1",
         messages=app.conversation.messages,
         temperature=1,
         top_p=0.8,
@@ -131,7 +131,7 @@ async def chat(chat_message: ChatMessage):
     app.conversation.messages.append({"role": "user", "content":resumeAnalyze})
 
     completion = client.chat.completions.create(
-        model="nvidia/llama-3.1-nemotron-70b-instruct",
+        model="deepseek-ai/deepseek-r1",
         messages=app.conversation.messages,
         temperature=1,
         top_p=0.8,
