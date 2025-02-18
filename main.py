@@ -7,6 +7,7 @@ from pydantic import BaseModel
 from openai import OpenAI
 import os
 from typing import List
+import pdfplumber
 
 app = FastAPI()
 
@@ -57,7 +58,7 @@ async def chat(chat_message: ChatMessage):
     append_to_aboutme(f"User: {chat_message.message}")
 
     completion = client.chat.completions.create(
-        model="deepseek-ai/deepseek-r1",
+        model="nvidia/llama-3.1-nemotron-70b-instruct",
         messages=app.conversation.messages,
         temperature=1,
         top_p=1,
@@ -86,7 +87,7 @@ async def chat(chat_message: ChatMessage):
     app.conversation.messages.append({"role": "user", "content":careerresult})
 
     completion = client.chat.completions.create(
-        model="deepseek-ai/deepseek-r1",
+        model="nvidia/llama-3.1-nemotron-70b-instruct",
         messages=app.conversation.messages,
         temperature=1,
         top_p=0.8,
@@ -104,18 +105,17 @@ async def chat(chat_message: ChatMessage):
 
 @app.post("/analyzeresume")
 async def chat(chat_message: ChatMessage):
-    resumeData = read_file_content("resume analysy.txt")
-    if not hasattr(app, 'conversation'):
-        app.conversation = Conversation()
-
-    resume_content =await file.read()
-    resumeData = resume_content.decode("utf-8")
+    with pdfplumber.open("example.pdf") as pdf:
+        resumeData=""
+        for page in pdf.pages:
+           resumeData += page.extract_text()
+        
     resumeAnalyze = f"you are a resume analyser, based on the instruction {resumeData} analyze the following resume ' {aboutme}' "
 
     app.conversation.messages.append({"role": "user", "content":resumeAnalyze})
 
     completion = client.chat.completions.create(
-        model="deepseek-ai/deepseek-r1",
+        model="nvidia/llama-3.1-nemotron-70b-instruct",
         messages=app.conversation.messages,
         temperature=1,
         top_p=0.8,
