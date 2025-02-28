@@ -76,10 +76,11 @@ async def chat(chat_message: ChatMessage):
 
     return {"response": response}
 
+aboutme = read_file_content("about.txt")
+coursepredicter = read_file_content("availablecourses.txt")
+
 @app.post("/predictcourse")
 async def chat(chat_message: ChatMessage):
-    aboutme = read_file_content("about.txt")
-    coursepredicter = read_file_content("availablecourses.txt")
     if not hasattr(app, 'conversation'):
         app.conversation = Conversation()
     careerresult = f"this is my career counslling conversation {aboutme}\n\n now suggest me only 5 courses from the following listed courses{coursepredicter}. after giving me the 5 course, say me in very precise manner about why did you that 5 course, say me about sallary packages available in different country. do not  give the responce in tables(rows,columns)"
@@ -109,9 +110,11 @@ async def chat(chat_message: ChatMessage):
         resumeData=""
         for page in pdf.pages:
            resumeData += page.extract_text()
-        
-    resumeAnalyze = f"you are a resume analyser, based on the instruction {resumeData} analyze the following resume ' {aboutme}' "
-
+    conversation_hist = read_file_content("aboutme.txt")
+    if (!conversation_hist):
+        resumeAnalyze = f"you are a resume analyser, based on the instruction {aboutme} analyze the following resume ' {resumeData}' "
+    else:
+        resumeAnalyze = f"you are a resume analyser, based on the instruction {resumeData} analyze the following resume ' {aboutme}' you can also my following career counslling conversation '{}' "
     app.conversation.messages.append({"role": "user", "content":resumeAnalyze})
 
     completion = client.chat.completions.create(
