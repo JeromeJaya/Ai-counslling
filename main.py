@@ -83,7 +83,7 @@ coursepredicter = read_file_content("availablecourses.txt")
 async def chat(chat_message: ChatMessage):
     if not hasattr(app, 'conversation'):
         app.conversation = Conversation()
-    careerresult = f"this is my career counslling conversation {aboutme}\n\n now suggest me only 5 courses from the following listed courses{coursepredicter}. after giving me the 5 course, say me in very precise manner about why did you that 5 course, say me about sallary packages available in different country. do not  give the responce in tables(rows,columns)"
+    careerresult = f" this is my career counslling conversation {aboutme}\n\n now suggest me only 5 courses from the following listed courses{coursepredicter}. after giving me the 5 course, say me in very precise manner about why did you that 5 course, say me about sallary packages available in different country. do not  give the responce in tables(rows,columns)"
 
     app.conversation.messages.append({"role": "user", "content":careerresult})
 
@@ -103,19 +103,18 @@ async def chat(chat_message: ChatMessage):
     app.conversation.messages.append({"role": "assistant", "content": response2})
 
     return {"response": response2}
-
+    
+resumeInstruction= read_file_content("resumeSystemInstruction.txt")
 @app.post("/analyzeresume")
 async def chat(chat_message: ChatMessage):
     with pdfplumber.open("example.pdf") as pdf:
         resumeData=""
         for page in pdf.pages:
            resumeData += page.extract_text()
-    conversation_hist = read_file_content("aboutme.txt")
-    if (!conversation_hist):
-        resumeAnalyze = f"you are a resume analyser, based on the instruction {aboutme} analyze the following resume ' {resumeData}' "
+    if (! aboutme):
+        resumeAnalyze = f"you are a resume analyser, based on the instruction {resumeInstruction} analyze the following resume ' {resumeData}' "
     else:
-        resumeAnalyze = f"you are a resume analyser, based on the instruction {resumeData} analyze the following resume ' {aboutme}' you can also my following career counslling conversation '{}' "
-    app.conversation.messages.append({"role": "user", "content":resumeAnalyze})
+        resumeAnalyze = f"you are a resume analyser, based on the instruction {resumeInstruction} analyze the following resume ' {resumeData}' you can also my following career counslling conversation '{aboutme}' "
 
     completion = client.chat.completions.create(
         model="nvidia/llama-3.1-nemotron-70b-instruct",
@@ -129,8 +128,7 @@ async def chat(chat_message: ChatMessage):
     response3 = ""
     for chunk in completion:
         if chunk.choices and chunk.choices[0].delta and chunk.choices[0].delta.content is not None:
-            response2 += chunk.choices[0].delta.content
-    app.conversation.messages.append({"role": "assistant", "content": response3})
+            response3 += chunk.choices[0].delta.content
 
     return {"response": response3}
 
