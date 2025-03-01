@@ -112,7 +112,7 @@ async def chat():
         resumeData=""
         for page in pdf.pages:
            resumeData += page.extract_text()
-    if (! aboutme):
+    if not aboutme:
         resumeAnalyze = f"you are a resume analyser, based on the instruction {resumeInstruction} analyze the following resume ' {resumeData}' "
     else:
         resumeAnalyze = f"you are a resume analyser, based on the instruction {resumeInstruction} analyze the following resume ' {resumeData}' you can also my following career counslling conversation '{aboutme}' "
