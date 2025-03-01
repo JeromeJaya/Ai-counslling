@@ -248,7 +248,7 @@
             const formData = new FormData();
             formData.append('pdf', file); // 'pdf' is the key to use on the backend
                 try{
-                    const response = await fetch('/analyzeresume', {  // replace with your actual backend endpoint
+                    const response = await fetch('http://127.0.0.1:8000/analyzeresume', {  // replace with your actual backend endpoint
                     method: 'POST',
                     body: formData
                 })
