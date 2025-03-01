@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Analyzer | CareerBoost Pro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 700px;
+            margin-top: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, #00b4d8, #90e0ef);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .upload-section {
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .upload-section:hover {
+            border-color: #00b4d8;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .upload-section.dragover {
+            border-color: #90e0ef;
+            background: rgba(144, 224, 239, 0.1);
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .upload-label {
+            cursor: pointer;
+            display: block;
+            font-size: 1.1rem;
+            color: #90e0ef;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #00b4d8;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .action-btn {
+            background: linear-gradient(45deg, #00b4d8, #90e0ef);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 180, 216, 0.4);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #00b4d8;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+                width: 95%;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>AI Resume Analyzer</h1>
+            <p>Upload your resume for comprehensive analysis and career guidance</p>
+        </div>
+
+        <div class="upload-section" id="dropZone">
+            <div class="upload-icon">📄</div>
+            <input type="file" id="fileInput" accept=".pdf">
+            <label for="fileInput" class="upload-label">
+                <strong>Choose PDF File</strong> or drag it here
+            </label>
+        </div>
+
+        <div class="button-group">
+            <button class="action-btn" id="analyzeBtn" onclick="sendMessage()">Analyze Resume</button>
+            <button class="action-btn" id="counselBtn">Career Counseling</button>
+        </div>
+
+        <div class="loading">
+            <div class="spinner"></div>
+            <p id="text_op">the answer will be dispalyed here</p>
+        </div>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const loading = document.querySelector('.loading');
+
+        let synthesis;
+        if ('speechSynthesis' in window) {
+            synthesis = window.speechSynthesis;
+        }
+
+
+        // Drag and drop handlers
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            handleFile(file);
+        });
+
+        // File input change handler
+        fileInput.addEventListener('change', () => {
+            const file = fileInput.files[0];
+            handleFile(file);
+        });
+
+        // File validation and upload
+        function handleFile(file) {
+            if (file && file.type === 'application/pdf') {
+                // Here you would handle the file upload to your backend
+                console.log('Valid PDF file:', file.name);
+                alert("PDF uploaded successfully click the analyze butt")
+                analyzeBtn.disabled = false;
+            } else {
+                alert('Please upload only PDF files');
+                fileInput.value = '';
+                analyzeBtn.disabled = true;
+            }
+        }
+        function addMessage(text) {
+            const answerPlace = document.getElementById("text_op");
+            answerPlace.textContent= text;
+        }
+         // Speak message
+         function speakMessage(text) {
+            if (synthesis) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                // Set up the onend event listener to reset the background
+                utterance.onend = () => {
+            document.querySelector(".chat-main").style.backgroundImage = "none"; // Reset the background
+        };
+
+        // Set the background animation or image when speech starts
+        document.querySelector(".chat-main").style.backgroundImage = "url('https://sadtalkerai.com/wp-content/uploads/2024/01/ezgif.com-crop.gif')";
+        
+        synthesis.speak(utterance);
+    }
+}
+
+        
+        // Analyze button click handler
+        async function sendMessage() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            if (file) {
+            const formData = new FormData();
+            formData.append('pdf', file); // 'pdf' is the key to use on the backend
+                try{
+                    const response = await fetch('/analyzeresume', {  // replace with your actual backend endpoint
+                    method: 'POST',
+                    body: formData
+                })
+                if (response.ok) {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+                        const data1 = await response.json();
+                        function removeUnwantedSymbols(passage) {
+                            data2=passage.response
+                            return data2.replace(/[#*]+/g, '');
+                        }
+                        if (data1 && data1.response) {
+                        const clean =removeUnwantedSymbols(data1);
+                        addMessage(clean);
+                        speakMessage(clean);
+                        }else{
+                            addMessage("Invalid response format from server.")
+                        }
+                    } else {
+                        addMessage('Error processing your request. no response from backend.');
+                    }
+                }catch(error){
+                    console.error('Error:', error);
+                    addMessage('Error connecting to the server.');
+                }
+            }else {
+                alert('Please select a PDF file.');
+            }
+        }
+        // Counseling button click handler
+        document.getElementById('counselBtn').addEventListener('click', () => {
+            alert('Redirecting to career counseling...');
+            // Add your counseling page redirection logic here
+        });
+    </script>
+</body>
+</html>
