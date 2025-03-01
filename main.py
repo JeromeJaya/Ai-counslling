@@ -106,8 +106,9 @@ async def chat(chat_message: ChatMessage):
     
 resumeInstruction= read_file_content("resumeSystemInstruction.txt")
 @app.post("/analyzeresume")
-async def chat(chat_message: ChatMessage):
-    with pdfplumber.open("example.pdf") as pdf:
+async def chat():
+    file = request.files['pdf']
+    with pdfplumber.open(file) as pdf:
         resumeData=""
         for page in pdf.pages:
            resumeData += page.extract_text()
@@ -130,5 +131,5 @@ async def chat(chat_message: ChatMessage):
         if chunk.choices and chunk.choices[0].delta and chunk.choices[0].delta.content is not None:
             response3 += chunk.choices[0].delta.content
 
-    return {"response": response3}
+    return {"response": resumeData}
 
