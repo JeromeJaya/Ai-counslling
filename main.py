@@ -25,7 +25,7 @@ templates = Jinja2Templates(directory="template")
 
 client = OpenAI(
     base_url="https://integrate.api.nvidia.com/v1",
-    api_key="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"
+    api_key="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"
 )
 
 class ChatMessage(BaseModel):
